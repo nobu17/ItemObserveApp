@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="ItemObserveApp.Views.SettingPage" Title="Setting Page">
+    <ContentPage.Padding Thickness="5, 0, 5, 95">
+        <OnPlatform x:TypeArguments="Thickness">
+            <On Platform="Android" Value="5, 0, 5, 0" />
+            <On Platform="iOS" Value="5, 20, 5, 0" />
+        </OnPlatform>
+    </ContentPage.Padding>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="1" FontSize="10" Text="UserID" TextColor="Red" />
+        <Entry Grid.Row="2" Placeholder="UserID" TextColor="Red" Text="{Binding Model.UserID}" />
+
+        <Label Grid.Row="3" FontSize="10" Text="Password" TextColor="Red" />
+        <Entry Grid.Row="4" Placeholder="Password" TextColor="Red" Text="{Binding Model.Password}" IsPassword="True" />
+
+        <Label Grid.Row="5" FontSize="20" Text="{Binding ErrorMessage}" TextColor="Red" IsVisible="{Binding HasError}" />
+        <Grid Grid.Row="6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="3" Text="Commit" TextColor="White" BackgroundColor="Blue" Command="{Binding CommitCommand}"></Button>
+        </Grid>
+        <ActivityIndicator Grid.Row="1" Grid.RowSpan="6" IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}" Color="Red" />
+    </Grid>
+</ContentPage>

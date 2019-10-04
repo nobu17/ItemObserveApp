@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:forms="using:Xamarin.Forms"  x:Class="ItemObserveApp.Views.ItemEditPage" Title="ItemEdit Page">
+    <ContentPage.Padding Thickness="5, 0, 5, 95">
+        <OnPlatform x:TypeArguments="Thickness">
+            <On Platform="Android" Value="5, 0, 5, 0" />
+            <On Platform="iOS" Value="5, 20, 5, 0" />
+        </OnPlatform>
+    </ContentPage.Padding>
+    <RelativeLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+        <StackLayout Spacing="10" Orientation="Vertical">
+            <Label FontSize="10" Text="Item Name" TextColor="Red" />
+            <Entry Placeholder="Item Name" TextColor="Red" Text="{Binding Model.EditTarget.ProductName}" />
+
+            <Label FontSize="10" Text="Item ProductID" TextColor="Red" />
+            <Entry Placeholder="ProductID" TextColor="Red" Text="{Binding Model.EditTarget.ProductID}" />
+
+            <Label FontSize="10" Text="Threthold Price" TextColor="Red" />
+            <Entry Placeholder="ProductID" TextColor="Red" Text="{Binding Model.EditTarget.ThretholdPrice}" />
+
+            <Label FontSize="20" Text="{Binding ErrorMessage}" TextColor="Red" IsVisible="{Binding HasError}" />
+            <StackLayout Orientation="Horizontal">
+                <Button Text="Commit" TextColor="White" BackgroundColor="Blue" Command="{Binding CommitCommand}"></Button>
+                <Button Text="Cancel" TextColor="White" BackgroundColor="Blue" Command="{Binding CancelCommand}"></Button>
+            </StackLayout>
+        </StackLayout>
+        <ActivityIndicator IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}" Color="Red" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent,
+                                        Property=Width,
+                                        Factor=0.47}" RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent,
+                                        Property=Height,
+                                        Factor=0.33}" />
+    </RelativeLayout>
+</ContentPage>

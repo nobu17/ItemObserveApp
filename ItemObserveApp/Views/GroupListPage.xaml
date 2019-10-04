@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="ItemObserveApp.Views.GroupListPage" xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" x:Name="page">
+    <ContentPage.Padding Thickness="5, 0, 5, 95">
+        <OnPlatform x:TypeArguments="Thickness">
+            <On Platform="Android" Value="5, 0, 5, 0" />
+            <On Platform="iOS" Value="5, 20, 5, 0" />
+        </OnPlatform>
+    </ContentPage.Padding>
+    <RelativeLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+        <StackLayout Spacing="10" Orientation="Vertical">
+            <StackLayout Orientation="Horizontal">
+                <Button HorizontalOptions="Center" Text="Make New" TextColor="White" BackgroundColor="Blue" Command="{Binding MakeNewCommand}"></Button>
+            </StackLayout>
+            <ListView x:Name="MyListView" ItemsSource="{Binding Model.ItemGroupList}">
+                <ListView.Behaviors>
+                    <b:EventToCommandBehavior EventName="ItemSelected" EventArgsParameterPath="SelectedItem" Command="{Binding ItemSelectedCommand}" />
+                </ListView.Behaviors>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <ViewCell.ContextActions>
+                                <MenuItem Command="{Binding Path=BindingContext.EditCommand, Source={x:Reference Name=MyListView}}" CommandParameter="{Binding .}" Text="Edit" />
+                                <MenuItem Command="{Binding Path=BindingContext.DeleteCommand, Source={x:Reference Name=MyListView}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
+                            </ViewCell.ContextActions>
+                            <StackLayout Padding="15,0">
+                                <Label Text="{Binding GroupName}" />
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+        <ActivityIndicator IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}" Color="Red" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent,
+                                        Property=Width,
+                                        Factor=0.47}" RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent,
+                                        Property=Height,
+                                        Factor=0.33}" />
+    </RelativeLayout>
+</ContentPage>
