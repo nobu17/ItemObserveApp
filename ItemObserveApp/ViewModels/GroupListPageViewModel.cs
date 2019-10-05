@@ -5,14 +5,15 @@ using ItemObserveApp.Models;
 using ItemObserveApp.Models.Domain;
 using ItemObserveApp.Models.Repository;
 using Prism.Navigation;
+using Prism.Services;
 using Xamarin.Forms;
 
 namespace ItemObserveApp.ViewModels
 {
     public class GroupListPageViewModel : ViewModelBase
     {
-        public GroupListPageViewModel(IGroupRepository groupRepository, INavigationService navigationService)
-            : base(navigationService)
+        public GroupListPageViewModel(IGroupRepository groupRepository, INavigationService navigationService, IPageDialogService pageDialogService)
+            : base(navigationService, pageDialogService)
         {
             _model = new GroupListModel(groupRepository);
         }

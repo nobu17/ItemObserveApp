@@ -5,14 +5,15 @@ using ItemObserveApp.Models.Domain;
 using ItemObserveApp.Models.Repository;
 using ItemObserveApp.Models.Validator;
 using Prism.Navigation;
+using Prism.Services;
 using Xamarin.Forms;
 
 namespace ItemObserveApp.ViewModels
 {
     public class ItemEditViewModel : ViewModelBase
     {
-        public ItemEditViewModel(IItemRepository itemRepository, IValidate<Item> validater, INavigationService navigationService)
-            : base(navigationService)
+        public ItemEditViewModel(IItemRepository itemRepository, IValidate<Item> validater, INavigationService navigationService, IPageDialogService pageDialogService)
+            : base(navigationService, pageDialogService)
         {
             _model = new ItemEditModel(itemRepository, validater);
         }

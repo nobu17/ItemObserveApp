@@ -6,14 +6,15 @@ using ItemObserveApp.Models.Domain;
 using ItemObserveApp.Models.Repository;
 using ItemObserveApp.Models.Validator;
 using Prism.Navigation;
+using Prism.Services;
 using Xamarin.Forms;
 
 namespace ItemObserveApp.ViewModels
 {
     public class GroupEditPageViewModel : ViewModelBase
     {
-        public GroupEditPageViewModel(IGroupRepository groupRepository, IValidate<ItemGroup> validater, INavigationService navigationService)
-            : base(navigationService)
+        public GroupEditPageViewModel(IGroupRepository groupRepository, IValidate<ItemGroup> validater, INavigationService navigationService, IPageDialogService pageDialogService)
+            : base(navigationService, pageDialogService)
         {
             _model = new GroupEditModel(groupRepository, validater);
         }

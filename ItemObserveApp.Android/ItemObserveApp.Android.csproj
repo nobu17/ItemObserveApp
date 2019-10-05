@@ -58,6 +58,18 @@
     <PackageReference Include="Prism.Unity.Forms">
       <Version>7.2.0.1367</Version>
     </PackageReference>
+    <PackageReference Include="AWSSDK.Extensions.CognitoAuthentication">
+      <Version>0.9.4</Version>
+    </PackageReference>
+    <PackageReference Include="AWSSDK.Core">
+      <Version>3.3.103.45</Version>
+    </PackageReference>
+    <PackageReference Include="AWSSDK.CognitoIdentity">
+      <Version>3.3.100.81</Version>
+    </PackageReference>
+    <PackageReference Include="AWSSDK.CognitoIdentityProvider">
+      <Version>3.3.102.66</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />

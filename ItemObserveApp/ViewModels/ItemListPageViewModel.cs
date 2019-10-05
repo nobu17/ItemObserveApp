@@ -4,14 +4,15 @@ using ItemObserveApp.Models;
 using ItemObserveApp.Models.Domain;
 using ItemObserveApp.Models.Repository;
 using Prism.Navigation;
+using Prism.Services;
 using Xamarin.Forms;
 
 namespace ItemObserveApp.ViewModels
 {
     public class ItemListViewModel : ViewModelBase
     {
-        public ItemListViewModel(IItemRepository itemRepository, INavigationService navigationService)
-            : base(navigationService)
+        public ItemListViewModel(IItemRepository itemRepository, INavigationService navigationService, IPageDialogService pageDialogService)
+            : base(navigationService, pageDialogService)
         {
             _model = new ItemListModel(itemRepository);
         }

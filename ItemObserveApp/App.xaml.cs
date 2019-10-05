@@ -28,7 +28,7 @@ namespace ItemObserveApp
             InitializeComponent();
 
             // 起動直後にMainPageを表示する。
-            NavigationService.NavigateAsync("NavigationPage/MainPage");
+            NavigationService.NavigateAsync("NavigationPage/LoginPage");
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -46,11 +46,14 @@ namespace ItemObserveApp
             containerRegistry.RegisterForNavigation<ItemEditPage, ItemEditViewModel>();
             containerRegistry.RegisterForNavigation<ItemListPage, ItemListViewModel>();
             containerRegistry.RegisterForNavigation<SettingPage, SettingViewModel>();
+            containerRegistry.RegisterForNavigation<LoginPage, LoginPageViewModel>();
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
 
             containerRegistry.Register(typeof(IGroupRepository), typeof(MockGroupRepository));
             containerRegistry.Register(typeof(IItemRepository), typeof(MockItemRepository));
             containerRegistry.Register(typeof(IUserRepository), typeof(FileUserRepository));
+            containerRegistry.Register(typeof(ILoginRepository), typeof(AWSLoginRepository));
+
 
             containerRegistry.Register(typeof(IValidate<ItemGroup>), typeof(ItemGroupValidator));
             containerRegistry.Register(typeof(IValidate<Item>), typeof(ItemValidator));

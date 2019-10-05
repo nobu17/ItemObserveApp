@@ -20,6 +20,11 @@ namespace ItemObserveApp.Util
         {
             return await Task.Run(() =>
             {
+                if (!Directory.Exists(LocalFolder))
+                {
+                    Directory.CreateDirectory(LocalFolder);
+                }
+
                 // Use Combine so that the correct file path slashes are used
                 var filePath = Path.Combine(LocalFolder, fileName);
 
@@ -41,6 +46,11 @@ namespace ItemObserveApp.Util
 
         public static async Task<string> SaveToLocalFolderAsync(this Stream dataStream, string fileName)
         {
+            if (!Directory.Exists(LocalFolder))
+            {
+                Directory.CreateDirectory(LocalFolder);
+            }
+
             // Use Combine so that the correct file path slashes are used
             var filePath = Path.Combine(LocalFolder, fileName);
 
@@ -62,6 +72,11 @@ namespace ItemObserveApp.Util
         {
             return await Task.Run(() =>
             {
+                if (!Directory.Exists(LocalFolder))
+                {
+                    Directory.CreateDirectory(LocalFolder);
+                }
+
                 using (var fileStream = File.OpenRead(filePath))
                 {
                     return fileStream;
@@ -74,6 +89,11 @@ namespace ItemObserveApp.Util
         {
             return await Task.Run(() =>
             {
+                if (!Directory.Exists(LocalFolder))
+                {
+                    Directory.CreateDirectory(LocalFolder);
+                }
+
                 // Use Combine so that the correct file path slashes are used
                 var filePath = Path.Combine(LocalFolder, fileName);
 
@@ -86,8 +106,9 @@ namespace ItemObserveApp.Util
             });
         }
 
-        public static async Task<string> LoadFileStringAsync(string filePath)
+        public static async Task<string> LoadFileStringAsync(string fileName)
         {
+            var filePath = Path.Combine(LocalFolder, fileName);
             return await Task.Run(() => File.ReadAllText(filePath));
         }
 

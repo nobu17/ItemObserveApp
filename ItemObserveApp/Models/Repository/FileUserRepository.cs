@@ -8,9 +8,7 @@ namespace ItemObserveApp.Models.Repository
 {
     public class FileUserRepository : IUserRepository
     {
-        private const string FolderName = "UserSetting";
-
-        private const string FileName = "setting.txt";
+        private const string FileName = "UserSetting.txt";
 
         public FileUserRepository()
         {
@@ -22,7 +20,7 @@ namespace ItemObserveApp.Models.Repository
             {
 
                 // ファイルを取得する
-                var text = await FileExtensions.LoadFileStringAsync(Path.Combine(FolderName, FileName));
+                var text = await FileExtensions.LoadFileStringAsync(FileName);
                 var splits = text.Split(new String[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
                 var usr = new UserSetting();
@@ -39,6 +37,10 @@ namespace ItemObserveApp.Models.Repository
                         {
                             usr.Password = data[1];
                         }
+                        else if (data[0] == "Token")
+                        {
+                            usr.Token = data[1];
+                        }
                     }
                 }
                 return usr;
@@ -53,9 +55,9 @@ namespace ItemObserveApp.Models.Repository
         {
             var txt = "UserID," + target.UserID;
             txt = txt + Environment.NewLine + "Password," + target.Password;
-
+            txt = txt + Environment.NewLine + "Token," + target.Token;
             // テキストをファイルに書き込む
-            await txt.SaveToLocalFolderAsync(Path.Combine(FolderName, FileName));
+            await txt.SaveToLocalFolderAsync(FileName);
         }
     }
 }
