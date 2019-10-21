@@ -10,6 +10,8 @@ namespace ItemObserveApp.Views
         public GroupListPage()
         {
             InitializeComponent();
+            //NavigationPage.SetHasNavigationBar(this, false);
+            NavigationPage.SetHasBackButton(this, false);
         }
     }
 }

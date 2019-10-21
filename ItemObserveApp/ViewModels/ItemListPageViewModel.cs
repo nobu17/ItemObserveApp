@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
+using ItemObserveApp.Common;
 using ItemObserveApp.Models;
 using ItemObserveApp.Models.Domain;
 using ItemObserveApp.Models.Repository;
@@ -11,10 +12,10 @@ namespace ItemObserveApp.ViewModels
 {
     public class ItemListViewModel : ViewModelBase
     {
-        public ItemListViewModel(IItemRepository itemRepository, INavigationService navigationService, IPageDialogService pageDialogService)
+        public ItemListViewModel(IUserRepository userRepository, IItemRepository itemRepository, INavigationService navigationService, IPageDialogService pageDialogService)
             : base(navigationService, pageDialogService)
         {
-            _model = new ItemListModel(itemRepository);
+            _model = new ItemListModel(userRepository, itemRepository);
         }
 
         private ItemListModel _model;
@@ -40,7 +41,6 @@ namespace ItemObserveApp.ViewModels
                 });
             }
         }
-        public ICommand ReloadCommand { get; private set; }
         public ICommand ItemSelectedCommand
         {
             get
@@ -51,19 +51,35 @@ namespace ItemObserveApp.ViewModels
                     {
                         var param = new NavigationParameters();
                         param.Add("Item", item);
-                        NavigateAsync("ItemEditPage", param);
+                        NavigateAsync(Route.ItemEditPage, param);
                     }
                 });
             }
         }
 
-        public override void OnNavigatedTo(INavigationParameters parameters)
+        public ICommand MakeNewCommand
         {
-            if (parameters != null)
+            get
             {
-                var userID = parameters["UserID"] as string;
-                var password = parameters["Password"] as string;
-                InitModelAsync(userID, password);
+                return new Command(() =>
+                {
+                    var param = new NavigationParameters();
+                    param.Add("Item", _model.GetNewItem());
+                    NavigateAsync(Route.ItemEditPage, param);
+                });
+            }
+        }
+
+        public async override void OnNavigatedTo(INavigationParameters parameters)
+        {
+            if (parameters.ContainsKey("GroupID"))
+            {
+                await InitModelAsync(parameters["GroupID"] as string);
+            }
+            else
+            {
+                await ShowOKDialog("パラメータエラー", "GroupIDが指定されていません。");
+                NavigateGoBackAsync();
             }
         }
 
@@ -81,12 +97,12 @@ namespace ItemObserveApp.ViewModels
             }
         }
 
-        private async Task InitModelAsync(string userID, string groupID)
+        private async Task InitModelAsync(string groupID)
         {
             try
             {
                 IsLoading = true;
-                await _model.InitModelAsync(userID, groupID);
+                await _model.InitModelAsync(groupID);
             }
             finally
             {

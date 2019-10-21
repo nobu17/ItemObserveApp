@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
@@ -10,12 +10,11 @@ using Xamarin.Forms.Xaml;
 namespace ItemObserveApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MainPage : TabbedPage
+    public partial class LoginBasePage : ContentPage
     {
-        public MainPage()
+        public LoginBasePage()
         {
             InitializeComponent();
-            NavigationPage.SetHasBackButton(this, false);
         }
     }
 }

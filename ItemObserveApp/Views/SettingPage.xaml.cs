@@ -9,7 +9,8 @@ using Xamarin.Forms.Xaml;
 
 namespace ItemObserveApp.Views
 {
-    public partial class SettingPage
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class SettingPage : ContentPage
     {
         public SettingPage()
         {

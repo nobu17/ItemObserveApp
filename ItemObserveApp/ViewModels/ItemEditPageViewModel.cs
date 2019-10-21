@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using ItemObserveApp.Common;
 using ItemObserveApp.Models;
 using ItemObserveApp.Models.Domain;
 using ItemObserveApp.Models.Repository;
@@ -15,7 +17,7 @@ namespace ItemObserveApp.ViewModels
         public ItemEditViewModel(IItemRepository itemRepository, IValidate<Item> validater, INavigationService navigationService, IPageDialogService pageDialogService)
             : base(navigationService, pageDialogService)
         {
-            _model = new ItemEditModel(itemRepository, validater);
+            Model = new ItemEditModel(itemRepository, validater);
         }
 
         private ItemEditModel _model;
@@ -28,13 +30,28 @@ namespace ItemObserveApp.ViewModels
             }
         }
 
-        public ICommand CommitCommand
+        #region command
+
+        public ICommand OpenAmazonCommand
         {
             get
             {
                 return new Command(() =>
                 {
-                    Commit();
+                    var param = new NavigationParameters();
+                    param.Add("URL", "https://www.amazon.co.jp");
+                    NavigateAsync(Route.ItemWebBrowserPage, param);
+                });
+            }
+        }
+
+        public ICommand CommitCommand
+        {
+            get
+            {
+                return new Command(async () =>
+                {
+                    await CommitAsync();
                 });
             }
         }
@@ -49,22 +66,51 @@ namespace ItemObserveApp.ViewModels
             }
         }
 
+        #endregion
+
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
-            if (parameters != null)
+            if (parameters.ContainsKey("Item"))
             {
                 _model.EditTarget = parameters["Item"] as Item;
             }
+            else if (parameters.ContainsKey("WebItem"))
+            {
+                var item = parameters["WebItem"] as WebItemInfo;
+                _model.UpdateEditTarget(item);
+            }
         }
 
-        private void Commit()
+        private async Task CommitAsync()
         {
-
+            ErrorMessage = _model.Validate();
+            if (ErrorMessage == string.Empty)
+            {
+                try
+                {
+                    IsLoading = true;
+                    await _model.CommitAsync();
+                    GoBack();
+                }
+                catch (UnAuthException)
+                {
+                    // 認証エラーの場合はログインページへ
+                    NavigateAsync(Route.LoginInitPage, new NavigationParameters());
+                }
+                catch (Exception e)
+                {
+                    await ShowOKDialog("エラー", "エラーが発生しました。" + e.ToString());
+                }
+                finally
+                {
+                    IsLoading = false;
+                }
+            }
         }
 
         private void GoBack()
         {
-            NavigateAsync("GroupListPage", null);
+            NavigateGoBackAsync();
         }
     }
 

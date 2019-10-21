@@ -52,6 +52,16 @@ namespace ItemObserveApp.ViewModels
             await NavigationService.NavigateAsync(page, navigationParameters);
         }
 
+        public async void NavigateGoBackAsync()
+        {
+            await NavigationService.GoBackAsync();
+        }
+
+        public async void NavigateGoBackAsync(NavigationParameters navigationParameters)
+        {
+            await NavigationService.GoBackAsync(navigationParameters);
+        }
+
         #endregion
 
         #region lifecycle

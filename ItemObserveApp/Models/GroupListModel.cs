@@ -11,14 +11,21 @@ namespace ItemObserveApp.Models
     public class GroupListModel : BindableBase
     {
         private readonly IGroupRepository _groupRepository;
-        public GroupListModel(IGroupRepository groupRepository)
+        private readonly IUserRepository _userRepository;
+        public GroupListModel(IUserRepository userRepository, IGroupRepository groupRepository)
         {
             _groupRepository = groupRepository;
+            _userRepository = userRepository;
         }
 
         public async Task InitModelAsync()
         {
-            var groupList = await _groupRepository.GetItemGroupListAsync(UserSetting.UserID, UserSetting.Password);
+            _userSetting = await _userRepository.GetUserSettingAsync();
+            if (_userSetting == null)
+            {
+                throw new Exception("UserSetting is null");
+            }
+            var groupList = await _groupRepository.GetItemGroupListAsync(_userSetting.UserID, _userSetting.Password);
             ItemGroupList = new ObservableCollection<ItemGroup>(groupList);
         }
 
@@ -27,15 +34,14 @@ namespace ItemObserveApp.Models
             await _groupRepository.DeleteGroupAsync(target.UserID, target.GroupID);
         }
 
-        private UserSetting _userSetting;
-        public UserSetting UserSetting
+        public ItemGroup GetNewItemGroup()
         {
-            get { return _userSetting; }
-            set
-            {
-                SetProperty(ref _userSetting, value);
-            }
+            var group = new ItemGroup();
+            group.UserID = _userSetting.UserID;
+            return group;
         }
+
+        private UserSetting _userSetting;
 
         private ObservableCollection<ItemGroup> _itemGroupList;
         public ObservableCollection<ItemGroup> ItemGroupList

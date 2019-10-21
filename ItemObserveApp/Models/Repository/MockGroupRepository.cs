@@ -42,7 +42,8 @@ namespace ItemObserveApp.Models.Repository
                         return;
                     }
                 }
-                _items = _items.Append(group).OrderBy(x => x.GroupID);
+                var temp = _items.Append(group).OrderBy(x => x.GroupID).ToList();
+                _items = temp;
             });
         }
     }

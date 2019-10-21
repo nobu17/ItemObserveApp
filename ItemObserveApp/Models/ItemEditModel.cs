@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using ItemObserveApp.Common;
 using ItemObserveApp.Models.Domain;
@@ -25,6 +27,24 @@ namespace ItemObserveApp.Models
             {
                 SetProperty(ref _editTarget, value);
             }
+        }
+
+        private List<StoreType> _storetypeList = Enum.GetValues(typeof(StoreType)).Cast<StoreType>().ToList();
+        public List<StoreType> StoretypeList
+        {
+            get { return _storetypeList; }
+            set
+            {
+                SetProperty(ref _storetypeList, value);
+            }
+        }
+
+        public void UpdateEditTarget(WebItemInfo item)
+        {
+            EditTarget.ProductName = item.ItemName;
+            EditTarget.ProductID = item.ProductID;
+            EditTarget.ThretholdPrice = item.Price;
+            RaisePropertyChanged("EditTarget");
         }
 
         public async Task CommitAsync()

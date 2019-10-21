@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using ItemObserveApp.Common;
 using ItemObserveApp.Models;
 using ItemObserveApp.Models.Domain;
 using ItemObserveApp.Models.Repository;
@@ -41,9 +42,9 @@ namespace ItemObserveApp.ViewModels
         {
             get
             {
-                return new Command(() =>
+                return new Command(async () =>
                 {
-                    Commit();
+                    await CommitAsync();
                 });
             }
         }
@@ -58,7 +59,7 @@ namespace ItemObserveApp.ViewModels
             }
         }
 
-        private async Task Commit()
+        private async Task CommitAsync()
         {
             ErrorMessage = _model.Validate();
             if (ErrorMessage == string.Empty)
@@ -69,6 +70,15 @@ namespace ItemObserveApp.ViewModels
                     await _model.CommitAsync();
                     GoBack();
                 }
+                catch (UnAuthException)
+                {
+                    // 認証エラーの場合はログインページへ
+                    NavigateAsync(Route.LoginInitPage, new NavigationParameters());
+                }
+                catch (Exception e)
+                {
+                    await ShowOKDialog("エラー", "エラーが発生しました。" + e.ToString());
+                }
                 finally
                 {
                     IsLoading = false;
@@ -78,7 +88,7 @@ namespace ItemObserveApp.ViewModels
 
         private void GoBack()
         {
-            NavigateAsync("GroupListPage", null);
+            NavigateGoBackAsync();
         }
     }
 }

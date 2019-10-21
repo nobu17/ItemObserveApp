@@ -50,8 +50,8 @@ namespace ItemObserveApp.Models.Repository
                         item.ThretholdPrice = target.ThretholdPrice;
                         return;
                     }
-                    _items = _items.Append(target).OrderBy(x => x.ProductID);
                 }
+                _items = _items.Append(target).OrderBy(x => x.ProductID);
             });
         }
     }

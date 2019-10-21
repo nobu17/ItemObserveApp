@@ -10,9 +10,9 @@ using Xamarin.Forms.Xaml;
 namespace ItemObserveApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class LoginPage : ContentPage
+    public partial class LoginInitPage : LoginBasePage
     {
-        public LoginPage()
+        public LoginInitPage()
         {
             InitializeComponent();
         }

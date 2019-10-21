@@ -30,7 +30,7 @@ namespace ItemObserveApp.Models.Repository
                 };
 
                 var authResponse = await user.StartWithSrpAuthAsync(authRequest).ConfigureAwait(false);
-                var accessToken = "";
+                var token = "";
                 if (authResponse.ChallengeName == ChallengeNameType.NEW_PASSWORD_REQUIRED)
                 {
                     authResponse = await user.RespondToNewPasswordRequiredAsync(new RespondToNewPasswordRequiredRequest()
@@ -38,11 +38,12 @@ namespace ItemObserveApp.Models.Repository
                         SessionID = authResponse.SessionID,
                         NewPassword = password
                     });
-                    accessToken = authResponse.AuthenticationResult.AccessToken;
+                    // api認証で使用するのはアクセストークではなくIDトークの方
+                    token = authResponse.AuthenticationResult.IdToken;
                 }
-                else if (authResponse.AuthenticationResult.AccessToken != null)
+                else if (authResponse.AuthenticationResult.IdToken != null)
                 {
-                    accessToken = authResponse.AuthenticationResult.AccessToken;
+                    token = authResponse.AuthenticationResult.IdToken;
                 }
                 else
                 {
@@ -53,7 +54,7 @@ namespace ItemObserveApp.Models.Repository
 
                 result.IsSuccessed = true;
                 result.Message = string.Empty;
-                result.Token = accessToken;
+                result.Token = token;
                 return result;
             }
             catch (NotAuthorizedException)

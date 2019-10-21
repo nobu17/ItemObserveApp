@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using ItemObserveApp.Common;
 using ItemObserveApp.Models;
 using ItemObserveApp.Models.Domain;
 using ItemObserveApp.Models.Repository;
@@ -12,21 +13,16 @@ namespace ItemObserveApp.ViewModels
 {
     public class GroupListPageViewModel : ViewModelBase
     {
-        public GroupListPageViewModel(IGroupRepository groupRepository, INavigationService navigationService, IPageDialogService pageDialogService)
+        public GroupListPageViewModel(IUserRepository userRepository, IGroupRepository groupRepository, INavigationService navigationService, IPageDialogService pageDialogService)
             : base(navigationService, pageDialogService)
         {
-            _model = new GroupListModel(groupRepository);
+            _model = new GroupListModel(userRepository, groupRepository);
         }
 
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
-            if (parameters != null)
-            {
-                _model.UserSetting = parameters["UserSetting"] as UserSetting;
-                LoadGroupAsync();
-            }
+            LoadGroupAsync();
         }
-
 
         private GroupListModel _model;
         public GroupListModel Model
@@ -38,6 +34,20 @@ namespace ItemObserveApp.ViewModels
             }
         }
 
+        public ICommand MakeNewCommand
+        {
+            get
+            {
+                return new Command(() =>
+                {
+                    var param = new NavigationParameters();
+                    param.Add("ItemGroup", _model.GetNewItemGroup());
+                    NavigateAsync(Route.GroupEditPage, param);
+                });
+            }
+        }
+
+
         public ICommand EditCommand
         {
             get
@@ -48,7 +58,7 @@ namespace ItemObserveApp.ViewModels
                     {
                         var param = new NavigationParameters();
                         param.Add("ItemGroup", item);
-                        NavigateAsync("GroupEditPage", param);
+                        NavigateAsync(Route.GroupEditPage, param);
                     }
                 });
             }
@@ -79,9 +89,8 @@ namespace ItemObserveApp.ViewModels
                     if (item != null)
                     {
                         var param = new NavigationParameters();
-                        param.Add("UserID", item.UserID);
                         param.Add("GroupID", item.GroupID);
-                        NavigateAsync("ItemListPage", param);
+                        NavigateAsync(Route.ItemListPage, param);
                     }
                 });
             }
@@ -107,7 +116,15 @@ namespace ItemObserveApp.ViewModels
             {
                 IsLoading = true;
                 await _model.InitModelAsync();
-                // TODO エラーや認証失敗の場合は再度ログイン画面へ
+            }
+            catch (UnAuthException)
+            {
+                // 認証エラーの場合はログインページへ
+                NavigateAsync(Route.LoginInitPage, new NavigationParameters());
+            }
+            catch (Exception e)
+            {
+                await ShowOKDialog("エラー", "エラーが発生しました。" + e.ToString());
             }
             finally
             {

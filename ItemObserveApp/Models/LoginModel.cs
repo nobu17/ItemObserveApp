@@ -48,7 +48,7 @@ namespace ItemObserveApp.Models
             }
         }
 
-        public async Task<Tuple<bool, string>> LogionAsync()
+        public async Task<Tuple<bool, string>> LoginAsync()
         {
             var result = await _loginRepository.LoginAsync(_userSetting.UserID, _userSetting.Password);
             if (result.IsSuccessed)

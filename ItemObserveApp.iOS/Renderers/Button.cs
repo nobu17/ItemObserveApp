@@ -17,7 +17,8 @@ namespace ItemObservApp.iOS.Renderers
         protected override void OnElementChanged(ElementChangedEventArgs<Xamarin.Forms.Button> e)
         {
             base.OnElementChanged(e);
-            Control.ContentEdgeInsets = new UIEdgeInsets(Control.ContentEdgeInsets.Top, Control.ContentEdgeInsets.Left + 10, Control.ContentEdgeInsets.Bottom, Control.ContentEdgeInsets.Right + 10);
+            if (Control != null)
+                Control.ContentEdgeInsets = new UIEdgeInsets(Control.ContentEdgeInsets.Top, Control.ContentEdgeInsets.Left + 10, Control.ContentEdgeInsets.Bottom, Control.ContentEdgeInsets.Right + 10);
         }
     }
 }

@@ -1,12 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:d="http://xamarin.com/schemas/2014/forms/design" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="ItemObserveApp.Views.MainPage" xmlns:local="clr-namespace:ItemObserveApp.Views" NavigationPage.HasNavigationBar="false">
-    <!--iOSの場合は上部に余白を設ける-->
-    <!--iOSの場合は上部に余白を設ける-->
-    <TabbedPage.Padding>
-        <OnPlatform x:TypeArguments="Thickness" iOS="0,20,0,0" />
-    </TabbedPage.Padding>
-    <!--タブ1ページ目-->
-    <local:SettingPage Title="Item" />
-
-
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:ItemObserveApp.Views" x:Class="ItemObserveApp.Views.MainPage">
+    <!--Pages can be added as references or inline-->
+    <local:GroupListPage Title="Main" />
+    <local:LoginSettingPage Title="Login" />
+    <ContentPage Title="Tab 3" />
 </TabbedPage>

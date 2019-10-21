@@ -1,28 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:forms="using:Xamarin.Forms"  x:Class="ItemObserveApp.Views.GroupEditPage" Title="GroupEdit Page">
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:forms="using:Xamarin.Forms" x:Class="ItemObserveApp.Views.GroupEditPage" Title="GroupEdit Page">
     <ContentPage.Padding Thickness="5, 0, 5, 95">
         <OnPlatform x:TypeArguments="Thickness">
             <On Platform="Android" Value="5, 0, 5, 0" />
             <On Platform="iOS" Value="5, 20, 5, 0" />
         </OnPlatform>
     </ContentPage.Padding>
-    <RelativeLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-        <StackLayout Spacing="10" Orientation="Vertical" HorizontalOptions="FillAndExpand">
-            <Label FontSize="10" Text="Group ID" BackgroundColor="AliceBlue" TextColor="Red" HorizontalOptions="FillAndExpand" />
-            <Entry Placeholder="group name" TextColor="Red" Text="{Binding Model.EditTarget.GroupID}" />
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" FontSize="10" Text="Group ID" TextColor="Red" HorizontalOptions="FillAndExpand" />
+        <Label Grid.Row="1" TextColor="Red" Text="{Binding Model.EditTarget.GroupID}" />
 
-            <Label FontSize="10" Text="Group Name" TextColor="Red" HorizontalOptions="Fill" />
-            <Entry Placeholder="group name" TextColor="Red" Text="{Binding Model.EditTarget.GroupName}" />
-            <Label FontSize="20" Text="{Binding ErrorMessage}" TextColor="Red" IsVisible="{Binding HasError}" />
-            <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand">
-                <Button Text="Commit" TextColor="White" BackgroundColor="Blue" Command="{Binding CommitCommand}"></Button>
-                <Button Text="Cancel" TextColor="White" BackgroundColor="Blue" Command="{Binding CancelCommand}"></Button>
-            </StackLayout>
+        <Label Grid.Row="2" FontSize="10" Text="Group Name" TextColor="Red" HorizontalOptions="Fill" />
+        <Entry Grid.Row="3" Placeholder="group name" TextColor="Red" Text="{Binding Model.EditTarget.GroupName}" />
+        <Label Grid.Row="4" FontSize="20" Text="{Binding ErrorMessage}" TextColor="Red" IsVisible="{Binding HasError}" />
+        <StackLayout Grid.Row="5" Orientation="Horizontal" HorizontalOptions="EndAndExpand">
+            <Button Text="Commit" TextColor="White" BackgroundColor="Blue" Command="{Binding CommitCommand}"></Button>
+            <Button Text="Cancel" TextColor="White" BackgroundColor="Blue" Command="{Binding CancelCommand}"></Button>
         </StackLayout>
-        <ActivityIndicator IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}" Color="Red" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent,
-                                        Property=Width,
-                                        Factor=0.47}" RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent,
-                                        Property=Height,
-                                        Factor=0.33}" />
-    </RelativeLayout>
+        <ActivityIndicator Grid.Row="0" Grid.RowSpan="6" IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}" Color="Red" />
+    </Grid>
+
 </ContentPage>
