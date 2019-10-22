@@ -16,6 +16,10 @@ namespace ItemObserveApp.Models.Factory
             {
                 return new ItemAmazonBrowserRepository();
             }
+            else if (url.StartsWith(Urls.SurugayaURL, StringComparison.Ordinal))
+            {
+                return new ItemSurugayaBrowserRepository();
+            }
             return null;
         }
     }

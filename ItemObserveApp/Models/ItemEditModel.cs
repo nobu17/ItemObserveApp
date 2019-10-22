@@ -44,6 +44,7 @@ namespace ItemObserveApp.Models
             EditTarget.ProductName = item.ItemName;
             EditTarget.ProductID = item.ProductID;
             EditTarget.ThretholdPrice = item.Price;
+            EditTarget.StoreType = item.StoreType;
             RaisePropertyChanged("EditTarget");
         }
 

@@ -39,7 +39,33 @@ namespace ItemObserveApp.ViewModels
                 return new Command(() =>
                 {
                     var param = new NavigationParameters();
-                    param.Add("URL", "https://www.amazon.co.jp");
+                    param.Add("URL", Urls.AmazonURL);
+                    NavigateAsync(Route.ItemWebBrowserPage, param);
+                });
+            }
+        }
+
+        public ICommand OpenSurugayaCommand
+        {
+            get
+            {
+                return new Command(() =>
+                {
+                    var param = new NavigationParameters();
+                    param.Add("URL", Urls.SurugayaURL);
+                    NavigateAsync(Route.ItemWebBrowserPage, param);
+                });
+            }
+        }
+
+        public ICommand OpenBookOffCommand
+        {
+            get
+            {
+                return new Command(() =>
+                {
+                    var param = new NavigationParameters();
+                    param.Add("URL", Urls.BookOffURL);
                     NavigateAsync(Route.ItemWebBrowserPage, param);
                 });
             }
@@ -79,6 +105,11 @@ namespace ItemObserveApp.ViewModels
                 var item = parameters["WebItem"] as WebItemInfo;
                 _model.UpdateEditTarget(item);
             }
+        }
+
+        public override void OnNavigatedFrom(INavigationParameters parameters)
+        {
+            parameters.Add("GoBack", "");
         }
 
         private async Task CommitAsync()

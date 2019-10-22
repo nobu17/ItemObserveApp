@@ -7,6 +7,8 @@ namespace ItemObserveApp.Models.Domain
         {
         }
 
+        public StoreType StoreType { get; set; }
+
         public string ItemName { get; set; }
 
         public string ProductID { get; set; }

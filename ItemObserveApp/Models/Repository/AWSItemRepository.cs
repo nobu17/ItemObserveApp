@@ -24,9 +24,35 @@ namespace ItemObserveApp.Models.Repository
             }
         }
 
-        public Task DeleteItemAsync(Item target)
+        public async Task DeleteItemAsync(Item target)
         {
-            throw new NotImplementedException();
+            // guidが一致するものがあれば間引いて更新
+            var itemList = _lastGetItems.Where(x => x.UniqueID == target.UniqueID);
+            if (itemList.Count() == _lastGetItems.Count())
+            {
+                throw new ArgumentException("no item detected for delete");
+            }
+
+            var usr = await _userRepository.GetUserSettingAsync();
+            // delete interfaceは無いので間引いてdelete
+            var url = Util.Enviroment.APIURLBase + "/item";
+            var clinet = new APIClinet<PutItemsResponce>();
+            clinet.URL = url;
+            clinet.ApiToken = usr.Token;
+            var reqItem = new PutItemsParam();
+
+            var putLists = new PutLists();
+            putLists.UserID = target.UserID;
+            putLists.GroupID = target.GroupID;
+            putLists.ItemList = itemList.Select(x => new ItemInfo() { ThretholdPrice = x.ThretholdPrice, ItemName = x.ProductName, ProductID = x.ProductID, StoreType = StoreTypeUtil.GetStoreTypeFromEnum(x.StoreType) }).ToList();
+
+            reqItem.PutLists = putLists;
+            var res = await clinet.PostAsync(reqItem);
+            if (res.Result != null)
+            {
+                return;
+            }
+            throw new Exception("API call failed, code:" + res.StatusCode);
         }
 
         public async Task<IEnumerable<Item>> GetItemListAsync(string userID, string groupID)
@@ -46,12 +72,13 @@ namespace ItemObserveApp.Models.Repository
             }
             else if (res.Result != null)
             {
-                var items = res.Result.ItemList.Select(x => GetItemFromApiInfo(res.Result.UserID, res.Result.GroupID, x));
+                // to listしないと遅延評価でunique idがおかしくなる
+                var items = res.Result.ItemList.Select(x => GetItemFromApiInfo(res.Result.UserID, res.Result.GroupID, x)).ToList();
                 // put比較用に保持
-                _lastGetItems = res.Result.ItemList.Select(x => GetItemFromApiInfo(res.Result.UserID, res.Result.GroupID, x));
+                _lastGetItems = items.Select(x => x.CopyItem()).ToList();
                 return items;
             }
-            throw new Exception("APi call failed, code:" + res.StatusCode);
+            throw new Exception("API call failed, code:" + res.StatusCode);
         }
 
         public async Task PutItemAsync(Item target)
@@ -69,7 +96,7 @@ namespace ItemObserveApp.Models.Repository
             {
                 return;
             }
-            throw new Exception("APi call failed, code:" + res.StatusCode);
+            throw new Exception("API call failed, code:" + res.StatusCode);
         }
 
         private PutLists GetPutList(Item target)

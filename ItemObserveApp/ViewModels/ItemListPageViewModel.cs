@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using ItemObserveApp.Common;
 using ItemObserveApp.Models;
@@ -12,6 +13,8 @@ namespace ItemObserveApp.ViewModels
 {
     public class ItemListViewModel : ViewModelBase
     {
+        private string _groupID;
+
         public ItemListViewModel(IUserRepository userRepository, IItemRepository itemRepository, INavigationService navigationService, IPageDialogService pageDialogService)
             : base(navigationService, pageDialogService)
         {
@@ -28,19 +31,23 @@ namespace ItemObserveApp.ViewModels
             }
         }
 
+        #region command
+
         public ICommand DeleteCommand
         {
             get
             {
-                return new Command<Item>((item) =>
+                return new Command<Item>(async (item) =>
                 {
                     if (item != null)
                     {
-                        DeleteItemAsync(item);
+                        await DeleteItemAsync(item);
+                        await InitModelAsync(_groupID);
                     }
                 });
             }
         }
+
         public ICommand ItemSelectedCommand
         {
             get
@@ -70,19 +77,27 @@ namespace ItemObserveApp.ViewModels
             }
         }
 
+        #endregion
+
         public async override void OnNavigatedTo(INavigationParameters parameters)
         {
             if (parameters.ContainsKey("GroupID"))
             {
-                await InitModelAsync(parameters["GroupID"] as string);
+                _groupID = parameters["GroupID"] as string;
+                await InitModelAsync(_groupID);
+            }
+            else if (parameters.ContainsKey("GoBack"))
+            {
+                //戻ってきた場合
+                await InitModelAsync(_groupID);
             }
             else
             {
+                _groupID = "";
                 await ShowOKDialog("パラメータエラー", "GroupIDが指定されていません。");
                 NavigateGoBackAsync();
             }
         }
-
 
         private async Task DeleteItemAsync(Item target)
         {
@@ -90,6 +105,15 @@ namespace ItemObserveApp.ViewModels
             {
                 IsLoading = true;
                 await _model.DeleteItemAsync(target);
+            }
+            catch (UnAuthException)
+            {
+                // 認証エラーの場合はログインページへ
+                NavigateAsync(Route.LoginInitPage, new NavigationParameters());
+            }
+            catch (Exception e)
+            {
+                await ShowOKDialog("エラー", "エラーが発生しました。" + e.ToString());
             }
             finally
             {
@@ -103,6 +127,15 @@ namespace ItemObserveApp.ViewModels
             {
                 IsLoading = true;
                 await _model.InitModelAsync(groupID);
+            }
+            catch (UnAuthException)
+            {
+                // 認証エラーの場合はログインページへ
+                NavigateAsync(Route.LoginInitPage, new NavigationParameters());
+            }
+            catch (Exception e)
+            {
+                await ShowOKDialog("エラー", "エラーが発生しました。" + e.ToString());
             }
             finally
             {

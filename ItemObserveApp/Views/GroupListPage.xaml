@@ -25,8 +25,8 @@
                             <MenuItem Command="{Binding Path=BindingContext.EditCommand, Source={x:Reference Name=MyListView}}" CommandParameter="{Binding .}" Text="Edit" />
                             <MenuItem Command="{Binding Path=BindingContext.DeleteCommand, Source={x:Reference Name=MyListView}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
                         </ViewCell.ContextActions>
-                        <StackLayout Padding="15,0">
-                            <Label Text="{Binding GroupName}" />
+                        <StackLayout Padding="5,0" VerticalOptions="CenterAndExpand">
+                            <Label Text="{Binding GroupName}" FontSize="20" Margin="10,0,0,10" />
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>

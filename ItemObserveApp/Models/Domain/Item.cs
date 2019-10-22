@@ -10,6 +10,19 @@ namespace ItemObserveApp.Models.Domain
             UniqueID = Guid.NewGuid().ToString("N");
         }
 
+        public Item CopyItem()
+        {
+            var item = new Item();
+            item.UniqueID = UniqueID;
+            item.UserID = UserID;
+            item.GroupID = GroupID;
+            item.StoreType = StoreType;
+            item.ProductName = ProductName;
+            item.ProductID = ProductID;
+            item.ThretholdPrice = ThretholdPrice;
+            return item;
+        }
+
         // まとめてputする際に識別用のID database上は保持しない
         public string UniqueID { get; private set; }
 

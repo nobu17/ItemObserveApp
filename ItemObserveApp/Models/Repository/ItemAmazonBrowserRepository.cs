@@ -18,6 +18,7 @@ namespace ItemObserveApp.Models.Repository
             document.LoadHtml(bodyhtml);
 
             var item = new WebItemInfo();
+            item.StoreType = StoreType.amazon;
             item.ProductID = GetProductID(url);
             item.ItemName = GetItemTitle(title);
             item.Price = GetPrice(document);
