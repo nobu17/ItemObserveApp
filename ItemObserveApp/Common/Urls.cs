@@ -7,10 +7,12 @@ namespace ItemObserveApp.Common
 
         public const string SurugayaURL = "https://www.suruga-ya.jp";
 
-        public const string BookOffURL = "https://www.bookoffonline.co.jp";
+        public const string BookOffURL = "https://www.bookoffonline.co.jp/mb/CSfMbHomeMain.jsp";
 
         public const string AmazonProductURL = "/dp/";
 
         public const string SurugayaProductURL = "https://www.suruga-ya.jp/product/detail/";
+
+        public const string BookOffProductURL = "https://www.bookoffonline.co.jp/old/";
     }
 }

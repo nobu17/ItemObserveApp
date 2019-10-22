@@ -20,6 +20,11 @@ namespace ItemObserveApp.Models.Factory
             {
                 return new ItemSurugayaBrowserRepository();
             }
+            else if (url.StartsWith(Urls.BookOffURL, StringComparison.Ordinal))
+            {
+                return new ItemBookOffBrowserRepository();
+            }
+
             return null;
         }
     }

@@ -59,12 +59,16 @@ namespace ItemObserveApp.ViewModels
         {
             get
             {
-                return new Command<WebNavigatedEventArgs>((e) =>
+                return new Command<WebNavigatedEventArgs>(async (e) =>
                 {
                     if (e.Result == WebNavigationResult.Success)
                     {
                         Model.ChangeCommitable(e.Url);
                         _currentUrl = e.Url;
+                    }
+                    else
+                    {
+                        await ShowOKDialog("エラー", "Load Error:" + e.Result);
                     }
                 });
             }

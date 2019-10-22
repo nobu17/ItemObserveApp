@@ -27,7 +27,7 @@ namespace ItemObserveApp.Models.Repository
         public async Task DeleteItemAsync(Item target)
         {
             // guidが一致するものがあれば間引いて更新
-            var itemList = _lastGetItems.Where(x => x.UniqueID == target.UniqueID);
+            var itemList = _lastGetItems.Where(x => x.UniqueID != target.UniqueID);
             if (itemList.Count() == _lastGetItems.Count())
             {
                 throw new ArgumentException("no item detected for delete");
