@@ -41,9 +41,9 @@ namespace ItemObserveApp.ViewModels
             }
         }
 
-        protected override void OnLoginSuccessed()
+        protected async override void OnLoginSuccessed()
         {
-            GoBackPage();
+            await ShowOKDialog("通知", "ログインに成功しました。");
         }
 
         protected override void OnLoginFailed()
