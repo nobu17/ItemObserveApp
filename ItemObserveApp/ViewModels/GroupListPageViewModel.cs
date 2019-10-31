@@ -68,11 +68,14 @@ namespace ItemObserveApp.ViewModels
         {
             get
             {
-                return new Command<ItemGroup>((item) =>
+                return new Command<ItemGroup>(async (item) =>
                 {
                     if (item != null)
                     {
-                        DeleteGroupAsync(item);
+                        if (await ShowYesNoDialog("確認", "削除してよろしいでしょうか？"))
+                        {
+                            await DeleteGroupAsync(item);
+                        }
                     }
                 });
             }

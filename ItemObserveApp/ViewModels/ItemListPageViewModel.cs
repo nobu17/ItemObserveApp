@@ -15,10 +15,10 @@ namespace ItemObserveApp.ViewModels
     {
         private string _groupID;
 
-        public ItemListViewModel(IUserRepository userRepository, IItemRepository itemRepository, INavigationService navigationService, IPageDialogService pageDialogService)
+        public ItemListViewModel(IUserRepository userRepository, IItemRepository itemRepository, IItemPriceLogRepository itemPriceLogRepository, INavigationService navigationService, IPageDialogService pageDialogService)
             : base(navigationService, pageDialogService)
         {
-            _model = new ItemListModel(userRepository, itemRepository);
+            _model = new ItemListModel(userRepository, itemRepository, itemPriceLogRepository);
         }
 
         private ItemListModel _model;
@@ -37,12 +37,15 @@ namespace ItemObserveApp.ViewModels
         {
             get
             {
-                return new Command<Item>(async (item) =>
+                return new Command<ItemAndPriceLog>(async (item) =>
                 {
                     if (item != null)
                     {
-                        await DeleteItemAsync(item);
-                        await InitModelAsync(_groupID);
+                        if (await ShowYesNoDialog("確認", "削除してよろしいでしょうか？"))
+                        {
+                            await DeleteItemAsync(item.Item);
+                            await InitModelAsync(_groupID);
+                        }
                     }
                 });
             }
@@ -52,12 +55,12 @@ namespace ItemObserveApp.ViewModels
         {
             get
             {
-                return new Command<Item>((item) =>
+                return new Command<ItemAndPriceLog>((item) =>
                 {
                     if (item != null)
                     {
                         var param = new NavigationParameters();
-                        param.Add("Item", item);
+                        param.Add("Item", item.Item);
                         NavigateAsync(Route.ItemEditPage, param);
                     }
                 });

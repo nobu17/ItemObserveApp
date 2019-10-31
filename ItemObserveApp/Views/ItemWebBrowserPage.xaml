@@ -8,7 +8,7 @@
     </ContentPage.Padding>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="15" />
+            <RowDefinition Height="10" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">

@@ -56,6 +56,7 @@ namespace ItemObserveApp
 
             containerRegistry.Register(typeof(IGroupRepository), typeof(AWSGroupRepository));
             containerRegistry.Register(typeof(IItemRepository), typeof(AWSItemRepository));
+            containerRegistry.Register(typeof(IItemPriceLogRepository), typeof(AWSItemPriceLogRepository));
             containerRegistry.Register(typeof(IUserRepository), typeof(FileUserRepository));
             containerRegistry.Register(typeof(ILoginRepository), typeof(AWSLoginRepository));
             containerRegistry.Register(typeof(IItemBrowserFactory), typeof(ItemBrowserFactory));

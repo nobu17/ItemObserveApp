@@ -11,9 +11,9 @@
     </ContentPage.ToolbarItems>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="3*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <ListView Grid.Row="0" x:Name="MyListView" ItemsSource="{Binding Model.ItemList}">
+        <ListView Grid.Row="0" x:Name="MyListView" ItemsSource="{Binding Model.ItemList}" HasUnevenRows="True">
             <ListView.Behaviors>
                 <b:EventToCommandBehavior EventName="ItemSelected" EventArgsParameterPath="SelectedItem" Command="{Binding ItemSelectedCommand}" />
             </ListView.Behaviors>
@@ -24,16 +24,21 @@
                             <MenuItem Command="{Binding Path=BindingContext.DeleteCommand, Source={x:Reference Name=MyListView}}" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
                         </ViewCell.ContextActions>
                         <StackLayout Padding="5,0" Orientation="Vertical">
-                            <Label Text="{Binding ProductName}" LineBreakMode="TailTruncation" />
+                            <Label Text="{Binding Item.ProductName}" LineBreakMode="TailTruncation" />
                             <StackLayout Orientation="Horizontal">
-                                <Label Text="{Binding StoreType}"></Label>
-                                <Label Text="{Binding ThretholdPrice, StringFormat='¥{0:N0}'}"></Label>
+                                <Label Text="{Binding Item.StoreType}"></Label>
+                                <Label Text="{Binding Item.ThretholdPrice, StringFormat='¥{0:N0}'}"></Label>
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="履歴:"></Label>
+                                <Label Text="{Binding PriceLog.Price,  StringFormat='¥{0:N0}'}"></Label>
+                                <Label Text="{Binding PriceLog.LastModified}"></Label>
                             </StackLayout>
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <ActivityIndicator Grid.Row="0" Grid.RowSpan="2" IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}" Color="Red" />
+        <ActivityIndicator Grid.Row="0" IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}" Color="Red" />
     </Grid>
 </ContentPage>

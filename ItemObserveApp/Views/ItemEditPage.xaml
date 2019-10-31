@@ -45,7 +45,7 @@
         <Entry Grid.Row="7" Placeholder="ProductID" TextColor="Red" Text="{Binding Model.EditTarget.ThretholdPrice}" />
 
         <Label Grid.Row="8" FontSize="20" Text="{Binding ErrorMessage}" TextColor="Red" IsVisible="{Binding HasError}" />
-        <StackLayout Grid.Row="9" Orientation="Horizontal">
+        <StackLayout Grid.Row="9" Orientation="Horizontal" HorizontalOptions="End">
             <Button Text="Commit" TextColor="White" BackgroundColor="Blue" Command="{Binding CommitCommand}"></Button>
             <Button Text="Cancel" TextColor="White" BackgroundColor="Blue" Command="{Binding CancelCommand}"></Button>
         </StackLayout>

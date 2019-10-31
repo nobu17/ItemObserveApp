@@ -33,7 +33,9 @@ namespace ItemObserveApp.Models.Repository
 
         private string GetProductID(string url)
         {
-            return url.Split(new string[] { "?" }, StringSplitOptions.RemoveEmptyEntries)[0].Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries).LastOrDefault();
+            var res = url.Split(new string[] { Urls.AmazonProductURL }, StringSplitOptions.RemoveEmptyEntries)[1];
+            return res.Split(new string[] { "?", "/" }, StringSplitOptions.RemoveEmptyEntries)[0];
+            //return url.Split(new string[] { "?" }, StringSplitOptions.RemoveEmptyEntries)[0].Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries).LastOrDefault();
         }
 
         private int GetPrice(HtmlDocument document)
